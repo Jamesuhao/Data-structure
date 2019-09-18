@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "无头单向非循环链表", "无头单向非循环链表\无头单向非循环链表.vcxproj", "{077554CC-99ED-47A2-86F3-5B3A5884B086}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Debug|x64.ActiveCfg = Debug|x64
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Debug|x64.Build.0 = Debug|x64
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Debug|x86.ActiveCfg = Debug|Win32
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Debug|x86.Build.0 = Debug|Win32
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Release|x64.ActiveCfg = Release|x64
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Release|x64.Build.0 = Release|x64
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Release|x86.ActiveCfg = Release|Win32
+		{077554CC-99ED-47A2-86F3-5B3A5884B086}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31D8E486-54DE-4A1B-AD81-C20A9E8B9042}
+	EndGlobalSection
+EndGlobal
