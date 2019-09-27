@@ -1,5 +1,2 @@
 ﻿  heap.c
-D:\C语言\代码\数据结构\堆\堆\heap.c(78): warning C4716:  “HeapTop”: 必须返回一个值
-D:\C语言\代码\数据结构\堆\堆\heap.c(86): warning C4716:  “HeapEmpty”: 必须返回一个值
-D:\C语言\代码\数据结构\堆\堆\heap.c(82): warning C4716:  “HeapSize”: 必须返回一个值
   堆.vcxproj -> D:\C语言\代码\数据结构\堆\Debug\堆.exe
