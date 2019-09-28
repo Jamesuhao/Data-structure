@@ -1,7 +1,7 @@
 #include"BinarryTree.h"
 #include<assert.h>
 #include<malloc.h>
- //通过前序遍历的数组"ABD##E#H##CF##G##"构建二叉树 
+//通过前序遍历数组"ABD##E#H##CF##G##"构建二叉树 
 BTNode* BinaryTreeCreate(BTDataType* a, int* pi)
 {
 	if (a[*pi] != '#')
@@ -20,7 +20,24 @@ BTNode* BinaryTreeCreate(BTDataType* a, int* pi)
 		return NULL;
 	}
 }
-
+// 通过中序遍历的数组"#D#B#E#H#A#F#C#G#"构建二叉树 
+//BTNode* BinaryTreeCreate(BTDataType* a, int* pi)
+//{
+//	if (a[*pi] != '#')
+//	{
+//		BTNode* root = (BTNode*)malloc(sizeof(BTNode));
+//		root->_left = BinaryTreeCreate(a, pi);
+//		root->_data = a[*pi];
+//		++(*pi);
+//		root->_right = BinaryTreeCreate(a, pi);
+//		//++(*pi);
+//		return root;
+//	}
+//	else
+//	{
+//		return NULL;
+//	}
+//}
 void BinaryTreeDestory(BTNode** root)
 {
 	BTNode* curRoot = *root;
@@ -52,7 +69,7 @@ int BinaryTreeLeafSize(BTNode* root)
 		return 0;
 	}
 	//root为叶子节点
-	if (root->_left == NULL || root->_right == NULL)
+	if (root->_left == NULL && root->_right == NULL)
 	{
 		return 1;
 	}
@@ -144,15 +161,16 @@ void BinaryTreePostOrder(BTNode* root)
 }
 void TestBinarryTree()
 {   //ABD##E#H##CF##G##
+	//#D#B#E#H#A#F#C#G#
 	int i = 0;
 	char a[] = { 'A','B','D','#','#','E','#','H','#','#','C','F','#','#','G','#','#' };
 	BTNode* root = BinaryTreeCreate(a, &i);
-	BinaryTreePrevOrder(root);
-	printf("\n");
-	BinaryTreeInOrder(root);
-	printf("\n");
-	BinaryTreePostOrder(root);
-	printf("\n");
+	//BinaryTreePrevOrder(root);
+	//printf("\n");
+	//BinaryTreeInOrder(root);
+	//printf("\n");
+	//BinaryTreePostOrder(root);
+	//printf("\n");
 	i = BinaryTreeLeafSize(root);
 	printf("%d\n",i);
 	i = BinaryTreeSize(root);

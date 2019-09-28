@@ -1,4 +1,2 @@
 ﻿  BinarryTree.c
-D:\C语言\代码\数据结构\Btree\Btree\BinarryTree.c(80): warning C4716:  “BinaryTreeLevelKSize”: 必须返回一个值
-D:\C语言\代码\数据结构\Btree\Btree\BinarryTree.c(84): warning C4716:  “BinaryTreeFind”: 必须返回一个值
   Btree.vcxproj -> D:\C语言\代码\数据结构\Btree\Debug\Btree.exe
