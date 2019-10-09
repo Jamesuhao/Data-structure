@@ -1,2 +1,3 @@
-﻿  BinarryTree.c
+﻿  QueueNode.c
+D:\C语言\代码\数据结构\Btree\Btree\QueueNode.c(63,11): warning C4047: “return”:“DataType”与“int”的间接级别不同
   Btree.vcxproj -> D:\C语言\代码\数据结构\Btree\Debug\Btree.exe
