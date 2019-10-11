@@ -124,11 +124,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BinarryTree.h" />
-    <ClInclude Include="QueueNode.h" />
+    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinarryTree.c" />
-    <ClCompile Include="QueueNode.c" />
+    <ClCompile Include="Stack.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

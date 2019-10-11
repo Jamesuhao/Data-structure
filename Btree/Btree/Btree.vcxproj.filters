@@ -18,7 +18,7 @@
     <ClInclude Include="BinarryTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="QueueNode.h">
+    <ClInclude Include="Stack.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClCompile Include="BinarryTree.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="QueueNode.c">
+    <ClCompile Include="Stack.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
