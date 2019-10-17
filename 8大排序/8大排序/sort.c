@@ -59,7 +59,7 @@ void ShellSort(int* arr, int n)
 		}
 	}
 }
-//直接选择排序
+//3.直接选择排序
 void Swap(int* a, int* b)
 {
 	int tmp = *a;
@@ -99,7 +99,7 @@ void SelectSort(int* a, int n)
 	}
 
 }
-//堆排序
+//4.堆排序
 //建堆：向下调整算法
 void ShiftDown(int* arr, int n, int root)
 {
@@ -137,7 +137,7 @@ void HeapSort(int* arr, int n)
 		end--;
 	}
 }
-//冒泡排序
+//5.冒泡排序
 //时间复杂度:最好情况下：O(N) 最坏情况下：O(N^2)
 //空间复杂度:O(1)
 //稳定性:稳定
@@ -174,7 +174,7 @@ void PrintArray(int* arr, int n)
 	}
 	printf("\n");
 }
-//快排
+//6.快排
 //时间复杂度：O(logN*N)
 //空间复杂度：O(logN)
 //快排的一次排序：确定基准值的位置
@@ -242,18 +242,19 @@ int PartSort2(int* a, int left, int right)
 	int key = a[left];
 	while (left < right)
 	{
-		//从右边找小
+		//从右边找小于k的元素
 		while (left < right && a[right] >= key)
 			--right;
 		//填坑
 		a[left] = a[right];
-		//从左边找大
+		//从左边找大于k的值
 		while (left < right && a[left] <= key)
 			++left;
 		//填坑
 		a[right] = a[left];
 	}
 	//存放key
+	//填坑
 	a[left] = key;
 	return left;
 }
@@ -303,16 +304,20 @@ void QuickSort(int* a, int left, int right)
 	StackInit(&st);
 	if (left < right)
 	{
+		//把右区间先压栈
 		StackPush(&st, right);
+		//把左区间压栈
 		StackPush(&st, left);
 	}
 	while (StackEmpty(&st) == 0)
 	{
+		//区间起始位置
 		int start = StackTop(&st);
 		StackPop(&st);
+		//区间结束位置
 		int end = StackTop(&st);
 		StackPop(&st);
-		//划分当前区间
+		//划分当前序列区间
 		int mid = PartSort3(a, start, end);
 		//划分左区间:左边元素个数大于1时进行划分
 		if (start < mid - 1)
@@ -326,6 +331,76 @@ void QuickSort(int* a, int left, int right)
 			StackPush(&st, end);
 			StackPush(&st, mid + 1);
 		}
+	}
+}
+//7.归并排序
+//时间复杂度:O(N*logN)
+//空间复杂度：O(N+logN)---->O(N)
+void _MergeSort(int* a, int left, int right, int* tmp)
+{
+	//区间只剩一个元素时，不需要分解和归并
+	if (left >= right)
+		return;
+	//分解
+	int mid = left + (right - left) / 2;
+	_MergeSort(a, left, mid, tmp);
+	_MergeSort(a, mid + 1, right, tmp);
+
+	//归并[left,mid],[mid+1,right]
+	int start1 = left; 
+	int end1 = mid;
+	int start2 = mid + 1;
+	int end2 = right;//begin1---end2->left--->right
+	int tmpindex = start1;
+	while (start1 <= end1 && start2 <= end2)
+	{
+		//<:取右边
+		//<=:取左边
+		if (a[start1] <= a[start2])
+			tmp[tmpindex++] = a[start1++];
+		else
+			tmp[tmpindex++] = a[start2++];
+	}
+	while(start1<=end1)
+		tmp[tmpindex++] = a[start1++];
+	while(start2<=end2)
+		tmp[tmpindex++] = a[start2++];
+	//拷贝到原有数组对应区间
+	memcpy(a + left, tmp + left, (right - left + 1) * sizeof(int));
+}
+
+void MergeSort(int* arr, int n)
+{
+	int* tmp = (int*)malloc(n * sizeof(int) * n);
+	_MergeSort(arr, 0, n - 1, tmp);
+	free(tmp);
+	tmp = NULL;
+}
+//8.计数排序
+void CountSort(int* a, int n)
+{
+	int min = a[0];
+	int max = a[0];
+	int i = 0;
+	for (i = 0; i < n; i++)
+	{
+		if (a[i] < min)
+			min = a[i];
+		if (a[i] > max)
+			max = a[i];
+	}
+	int range = max - min + 1;
+	int* CountArr = (int*)malloc(sizeof(int) * range);
+	memset(CountArr, 0, sizeof(int) * range);
+	//计数
+	for (i = 0; i < n; ++i)
+		CountArr[a[i] - min]++;
+	//排序
+	int index = 0;
+	for (i = 0; i < range; i++)
+	{
+		while (CountArr[i]--)
+			a[index++] = i + min;
 	}
 }
 void TestSort()
@@ -344,7 +419,10 @@ void TestSort()
 	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 	//QuickSortRecursion(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
 	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
-	QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
+	//QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
+	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
+	//MergeSort(arr, sizeof(arr) / sizeof(arr[0]));
+	CountSort(arr, sizeof(arr) / sizeof(arr[0]));
 	PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 }
 int main()

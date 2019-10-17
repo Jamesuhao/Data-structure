@@ -13,5 +13,3 @@ void StackPop(Stack* st);
 DataType StackTop(Stack* st);
 size_t StackSize(Stack* st);
 int StackEmpty(Stack* st);
-void StackPrint(Stack* st);
-void TestStack();
