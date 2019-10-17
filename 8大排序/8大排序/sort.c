@@ -2,6 +2,7 @@
 #include<malloc.h>
 #include<assert.h>
 #include<string.h>
+#include"Stack.h"
 //1.直接插入排序
 //时间复杂度：O(n^2)
 //空间复杂度：O(1)
@@ -174,7 +175,12 @@ void PrintArray(int* arr, int n)
 	printf("\n");
 }
 //快排
-//三数取中法(优化方法一中的取基准问题)。保证每次的划分均衡
+//时间复杂度：O(logN*N)
+//空间复杂度：O(logN)
+//快排的一次排序：确定基准值的位置
+
+
+//三数取中法(优化取基准问题)。保证每次的划分均衡
 int getMid(int* a, int left, int right)
 {
 	int mid = left + (right - left) / 2;
@@ -206,11 +212,8 @@ int getMid(int* a, int left, int right)
 
 	}
 }
-//方式一：
-//时间复杂度：O(logN*N)
-//空间复杂度：O(logN)
-//快排的一次排序：确定基准值的位置
-int PatrSort(int* a, int left, int right)
+//1.hoare法：
+int PatrSort1(int* a, int left, int right)
 {
 	int mid = getMid(a, left, right);
 	Swap(&a[mid], &a[left]);
@@ -231,24 +234,100 @@ int PatrSort(int* a, int left, int right)
 	Swap(&a[start], &a[left]);
 	return left;
 }
+//2.挖坑法
+int PartSort2(int* a, int left, int right)
+{
+	int mid = getMid(a, left, right);
+	Swap(&a[mid], &a[left]);
+	int key = a[left];
+	while (left < right)
+	{
+		//从右边找小
+		while (left < right && a[right] >= key)
+			--right;
+		//填坑
+		a[left] = a[right];
+		//从左边找大
+		while (left < right && a[left] <= key)
+			++left;
+		//填坑
+		a[right] = a[left];
+	}
+	//存放key
+	a[left] = key;
+	return left;
+}
+//3.前后指针法
+int PartSort3(int* a, int left, int right)
+{
+	int mid = getMid(a, left, right);
+	Swap(&a[mid], &a[left]);
 
-//进行递归
-void QuickSort(int* a, int left, int right)
+	//当前序列最后一个小于K的值
+	int prev = left;
+	//当前序列下一个小于K的值
+	int cur = prev + 1;
+	int key = a[left];
+	while (cur <= right)
+	{
+		//如果下一个小于k的位置与上一个小于k的位置不连续
+		//说明中间有大于k的值，进行交换，大--->向后移动，小<---向前移动
+		if (a[cur] < key && ++prev != cur)
+			Swap(&a[cur], &a[prev]);
+		++cur;
+	}
+	Swap(&a[left], &a[prev]);
+	return prev;
+}
+//递归写法：
+void QuickSortRecursion(int* a, int left, int right)
 {
 	if (left >= right)
 		return;
+	//区间优化：小区间不用递归
 	if (right - left + 1 < 5)
-	{
 		Insertsort(a + left, right - left + 1);
-	}
 	else
 	{
-		int mid = PatrSort(a, left, right);
-		QuickSort(a, left, mid - 1);
-		QuickSort(a, mid + 1, right);
+		//int key = PatrSort1(a, left, right);
+		int key = PartSort3(a, left, right);
+		QuickSortRecursion(a, left, key - 1);
+		QuickSortRecursion(a, key + 1, right);
 	}
 }
-
+//非递归写法：
+//利用栈模拟递归的过程
+void QuickSort(int* a, int left, int right)
+{
+	Stack st;
+	StackInit(&st);
+	if (left < right)
+	{
+		StackPush(&st, right);
+		StackPush(&st, left);
+	}
+	while (StackEmpty(&st) == 0)
+	{
+		int start = StackTop(&st);
+		StackPop(&st);
+		int end = StackTop(&st);
+		StackPop(&st);
+		//划分当前区间
+		int mid = PartSort3(a, start, end);
+		//划分左区间:左边元素个数大于1时进行划分
+		if (start < mid - 1)
+		{
+			StackPush(&st, mid - 1);
+			StackPush(&st, start);
+		}
+		//划分右区间:右边元素个数大于1时进行划分
+		if (end > mid + 1)
+		{
+			StackPush(&st, end);
+			StackPush(&st, mid + 1);
+		}
+	}
+}
 void TestSort()
 {
 	int arr[10] = {10,3,4,5,2,6,7,9,1,8};
@@ -263,6 +342,8 @@ void TestSort()
 	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 	//BubbleSort(arr, sizeof(arr) / sizeof(arr[0]));
 	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
+	//QuickSortRecursion(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
+	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 	QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
 	PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 }
@@ -270,18 +351,4 @@ int main()
 {
 	TestSort();
 	return 0;
-}
-void QuickSort(int* arr, int left, int right)
-{
-	int key = left;
-	while (left < right)
-	{
-		while (left < right && arr[key] <= arr[right])
-			right--;
-		while (left < right && arr[key] >= arr[left])
-			left++;
-		Swap(&arr[left], &arr[right]);
-	}
-	Swap(&arr[key], &arr[left]);
-	return left;
 }
