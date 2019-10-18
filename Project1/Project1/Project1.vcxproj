@@ -123,6 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="heap.h" />
     <ClInclude Include="ListNode.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SeqList.h" />
@@ -130,6 +132,8 @@
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryTree.c" />
+    <ClCompile Include="heap.c" />
     <ClCompile Include="ListNode.c" />
     <ClCompile Include="Queue.c" />
     <ClCompile Include="SeqList1.c" />
