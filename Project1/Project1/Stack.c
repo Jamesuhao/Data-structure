@@ -67,47 +67,47 @@ int StackEmpty(Stack* st)
 		return 0;
 }
 //´òÓ¡Õ»ÖÐÔªËØ
-void StackPrint(Stack* st)
-{
-	assert(st);
-	while (StackEmpty(st) == 0)
-	{
-		printf("%d ", StackTop(st));
-		StackPop(st);
-	}
-	printf("\n");
-}
-void TestStack()
-{
-	Stack st;
-	StackInit(&st);
-	StackPush(&st, 5);
-	StackPush(&st, 4);
-	StackPush(&st, 3);
-	StackPush(&st, 2);
-	StackPush(&st, 1);
-	int size = StackSize(&st);
-	printf("size=%d\n", size);
-	//StackPrint(&st);
-	int top = StackTop(&st);
-	printf("top=%d\n", st._top);
-	StackPop(&st);
-	top = StackTop(&st);
-	printf("top=%d\n", st._top);
-	StackPop(&st);
-	top = StackTop(&st);
-	printf("top=%d\n", st._top);
-	StackPop(&st);
-	top = StackTop(&st);
-	printf("top=%d\n", st._top);
-	StackPop(&st);
-	top = StackTop(&st);
-	printf("top=%d\n", st._top);
-	StackPop(&st);
-
-}
-int main()
-{
-	TestStack();
-	return 0;
-}
+//void StackPrint(Stack* st)
+//{
+//	assert(st);
+//	while (StackEmpty(st) == 0)
+//	{
+//		printf("%d ", StackTop(st));
+//		StackPop(st);
+//	}
+//	printf("\n");
+//}
+//void TestStack()
+//{
+//	Stack st;
+//	StackInit(&st);
+//	StackPush(&st, 5);
+//	StackPush(&st, 4);
+//	StackPush(&st, 3);
+//	StackPush(&st, 2);
+//	StackPush(&st, 1);
+//	int size = StackSize(&st);
+//	printf("size=%d\n", size);
+//	//StackPrint(&st);
+//	int top = StackTop(&st);
+//	printf("top=%d\n", st._top);
+//	StackPop(&st);
+//	top = StackTop(&st);
+//	printf("top=%d\n", st._top);
+//	StackPop(&st);
+//	top = StackTop(&st);
+//	printf("top=%d\n", st._top);
+//	StackPop(&st);
+//	top = StackTop(&st);
+//	printf("top=%d\n", st._top);
+//	StackPop(&st);
+//	top = StackTop(&st);
+//	printf("top=%d\n", st._top);
+//	StackPop(&st);
+//
+//}
+//int main()
+//{
+//	TestStack();
+//	return 0;
+//}

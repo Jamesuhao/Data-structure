@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<assert.h>
 #include<malloc.h>
-typedef int DataType;
+#include "BinaryTree.h"
+typedef BTNode* DataType;
 typedef struct Stack
 {
 	DataType* _a;
@@ -15,5 +16,5 @@ void StackPop(Stack* st);
 DataType StackTop(Stack* st);
 size_t StackSize(Stack* st);
 int StackEmpty(Stack* st);
-void StackPrint(Stack* st);
-void TestStack();
+//void StackPrint(Stack* st);
+//void TestStack();
