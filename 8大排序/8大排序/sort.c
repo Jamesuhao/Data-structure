@@ -379,33 +379,55 @@ void MergeSort(int* arr, int n)
 //8.计数排序
 void CountSort(int* a, int n)
 {
-	int min = a[0];
-	int max = a[0];
-	int i = 0;
-	for (i = 0; i < n; i++)
+	//int min = a[0];
+	//int max = a[0];
+	//int i = 0;
+	//for (i = 0; i < n; i++)
+	//{
+	//	if (a[i] < min)
+	//		min = a[i];
+	//	if (a[i] > max)
+	//		max = a[i];
+	//}
+	//int range = max - min + 1;
+	//int* CountArr = (int*)malloc(sizeof(int) * range);
+	//memset(CountArr, 0, sizeof(int) * range);
+	////计数
+	//for (i = 0; i < n; ++i)
+	//	CountArr[a[i] - min]++;
+	////排序
+	//int index = 0;
+	//for (i = 0; i < range; i++)
+	//{
+	//	while (CountArr[i]--)
+	//		a[index++] = i + min;
+	//}
+	if (a == NULL || n <= 0)
+		return;
+	const int oldestAge = 13;
+	int timesofAge[14];
+	for (int i = 0; i <= oldestAge; ++i)
+		timesofAge[i] = 0;
+	for (int i = 0; i < n; ++i)
 	{
-		if (a[i] < min)
-			min = a[i];
-		if (a[i] > max)
-			max = a[i];
+		int age = a[i];
+		if (age<0 || age>oldestAge)
+			return;
+		++timesofAge[age];
 	}
-	int range = max - min + 1;
-	int* CountArr = (int*)malloc(sizeof(int) * range);
-	memset(CountArr, 0, sizeof(int) * range);
-	//计数
-	for (i = 0; i < n; ++i)
-		CountArr[a[i] - min]++;
-	//排序
 	int index = 0;
-	for (i = 0; i < range; i++)
+	for (int i = 0; i < oldestAge; ++i)
 	{
-		while (CountArr[i]--)
-			a[index++] = i + min;
+		for (int j = 0; j < timesofAge[i]; ++j)
+		{
+			a[index] = i;
+			++index;
+		}
 	}
 }
 void TestSort()
 {
-	int arr[10] = {10,3,4,5,2,6,7,9,1,8};
+	int arr[13] = {10,2,9,8,7,10,8,2,10,7,8,1,1};
 	PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
 	//Insertsort(arr, sizeof(arr) / sizeof(arr[0]));
 	//PrintArray(arr, sizeof(arr) / sizeof(arr[0]));
