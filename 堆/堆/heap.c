@@ -1,12 +1,15 @@
 #include"heap.h"
 #include<malloc.h>
 #include<assert.h>
+#include<string.h>
 //创建一个大堆
 void HeapInit(Heap* hp, HPDataType* a, int n)
 {
 	int i = 0;
 	assert(hp && a);
 	hp->_a = (HPDataType*)malloc(sizeof(HPDataType) * n);
+	if (hp->_a == NULL)
+		return;
 	for (i = 0; i < n; i++)
 	{
 		hp->_a[i] = a[i];
@@ -51,7 +54,7 @@ void ShiftDown(HPDataType* a, int n, int root)
 		if (a[child] > a[parent])
 		{
 			//交换
-			Swap(&a[parent], &a[child]);
+			Swap(&a[child] ,&a[parent]);
 			//更新下一次调整的位置
 			parent = child;
 			child = 2 * parent + 1;
@@ -101,11 +104,18 @@ void HeapPush(Heap* hp, HPDataType x)
 	if (hp->_size == hp->_capacity)
 	{
 		int newcapacity = hp->_capacity == 0 ? 10 : 2 * hp->_capacity;
-		hp->_a = (HPDataType*)realloc(hp->_a, sizeof(HPDataType) * newcapacity);
+		HPDataType* space = (HPDataType*)malloc(sizeof(HPDataType) * newcapacity);
+		if (space != NULL && hp->_size > 0)
+		{
+			memcpy(space, hp->_a, sizeof(int) * hp->_size);
+			free(hp->_a);
+		}
+		hp->_a = space;
 		hp->_capacity = newcapacity;
 	}
 	//尾插
-	hp->_a[hp->_size] = x;
+	if(hp->_a!=NULL)
+		hp->_a[hp->_size] = x;
 	hp->_size++;
 	//向上调整
 	ShiftUp(hp->_a, hp->_size, hp->_size - 1);
@@ -168,7 +178,7 @@ void TestHeap()
 	HeapPrint(&hp);
 	//Heap hp;
 	//HeapEmptyInit(&hp);
-	//HeapPush(&hp, 1);
+	HeapPush(&hp, 10);
 	//HeapPush(&hp, 2);
 	//HeapPush(&hp, 3);
 	//HeapPush(&hp, 4);
@@ -176,7 +186,7 @@ void TestHeap()
 	//HeapPush(&hp, 6);
 	//HeapPush(&hp, 7);
 	//HeapPop(&hp);
-	//HeapPrint(&hp);
+	HeapPrint(&hp);
 }
 //打印堆
 void HeapPrint(Heap* hp)
@@ -202,6 +212,6 @@ void TestHeapSort()
 int main()
 {
 	TestHeap();
-	TestHeapSort();
+	//TestHeapSort();
 	return 0;
 }
