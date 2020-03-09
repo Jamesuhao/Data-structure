@@ -24,5 +24,8 @@
     <ClCompile Include="判断t1树中是否有与t2树拓扑结构完全相同的子树.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="恢复二叉搜索树.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
