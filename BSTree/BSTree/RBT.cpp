@@ -4,6 +4,7 @@
 2.如果一个节点是红色的，则它的两个孩子节点是黑色的。--->红色节点是不连续的
 3. 对于每个结点，从该结点到其所有后代叶结点的简单路径上，均包含相同数目的黑色结点
 */
+#if 0
 #include<iostream>
 #include<stack>
 #include <utility>
@@ -148,7 +149,7 @@ public:
 					if (cur == parent->_left)
 					{
 						RotateR(parent);
-						swap(cur,parent);
+						swap(cur, parent);
 					}
 					RotateL(gfather);
 					parent->_color = BLACK;
@@ -158,7 +159,7 @@ public:
 			}
 		}
 		//根的颜色始终是黑的
-		_header->_color = BLACK;
+		_header->_parent->_color = BLACK;
 		//更新_header->_left,_header->_right
 		_header->_left = leftMost();
 		_header->_right = rightMost();
@@ -193,14 +194,14 @@ public:
 		}
 		else
 		{
-			subL->_parent = nullptr;
 			_header->_parent = subL;
+			subL->_parent = _header;
 		}
 		parent->_parent = subL;
 	}
 	void RotateL(pNode parent)
 	{
-		if(parent==nullptr)
+		if (parent == nullptr)
 		{
 			return;
 		}
@@ -228,7 +229,7 @@ public:
 		else
 		{
 			_header->_parent = subR;
-			subR->_parent = nullptr;
+			subR->_parent = _header;
 
 		}
 		parent->_parent = subR;
@@ -270,11 +271,66 @@ public:
 			{
 				pNode top = s.top();
 				s.pop();
-				cout << "<"<<top->_value.first <<"----->"<<top->_value.second<< "> ";
+				cout << "<" << top->_value.first << "----->" << top->_value.second << "> ";
 				cur = top->_right;
 			}
 		}
 		cout << endl;
+	}
+	bool isRBTree()
+	{
+		pNode root = _header->_parent;
+		if (root == nullptr)
+		{
+			return true;
+		}
+		if (root->_color == RED)
+		{
+			cout << "根节点必须是黑色" << endl;
+			return false;
+		}
+		//每条路径上黑色节点的个数必须相同
+		//先任意遍历一条路径，统计出一条路径中所有的黑色节点
+		//此处遍历最右路径
+		pNode cur = root;
+		int totalBlackCount = 0;
+		while (cur)
+		{
+			if (cur->_color == BLACK)
+			{
+				++totalBlackCount;
+			}
+			cur = cur->_right;
+		}
+		int curBlackCount = 0;
+		return _isRBTree(root, curBlackCount, totalBlackCount);
+	}
+	bool _isRBTree(pNode root, int curBlackCount, int totalBlackCount)
+	{
+		//判断每条路径上黑色节点是否相同
+		//当前节点为空时，表示当前路劲已经遍历完
+		if (root == nullptr)
+		{
+			if (curBlackCount != totalBlackCount)
+			{
+				cout << "每条路径上黑色节点个数不同" << endl;
+				return false;
+			}
+			return true;
+		}
+		if (root->_color == BLACK)
+		{
+			++curBlackCount;
+		}
+		//判断有否存在两个红色节点连续
+		pNode parent = root->_parent;
+		if (parent && parent->_color == RED && root->_color == RED)
+		{
+			cout << "两个红色节点连续" << endl;
+			return false;
+		}
+		return _isRBTree(root->_left, curBlackCount, totalBlackCount)
+			&& _isRBTree(root->_right, curBlackCount, totalBlackCount);
 	}
 private:
 	pNode _header;//头结点
@@ -290,9 +346,12 @@ void test()
 	rbt.insert(make_pair(19, 1));
 	rbt.insert(make_pair(21, 1));
 	rbt.inOrder();
+	rbt.isRBTree();
+	cout << rbt.isRBTree() << endl;
 }
 int main()
 {
 	test();
 	return 0;
 }
+#endif

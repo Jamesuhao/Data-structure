@@ -24,5 +24,8 @@
     <ClCompile Include="RBT.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Map,set.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

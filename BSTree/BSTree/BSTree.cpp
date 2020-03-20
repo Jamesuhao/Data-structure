@@ -4,6 +4,7 @@
 2.如果右子树存在，那么右子树的值一定大于根节点的值
 3.它的左右子树也是一颗二叉搜索数
 */
+#if 0
 #include<iostream>
 using namespace std;
 template<typename T>
@@ -233,3 +234,4 @@ int main0()
 	testBSTree();
 	return 0;
 }
+#endif
