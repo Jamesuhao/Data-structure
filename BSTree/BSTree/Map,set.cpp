@@ -30,12 +30,112 @@ struct RBNode
 		, _color(RED)
 	{}
 };
+template<typename V>
+struct RBTIterator
+{
+	//封装节点，实现迭代器的功能，类似于list迭代器的实现
+	typedef RBNode<V> Node;
+	typedef Node* pNode;
+	typedef RBTIterator<V> self;
+	pNode _node;
+	RBTIterator(pNode node)
+		:_node(node)
+	{ }
+	V& operator*()
+	{
+		return _node->_value;
+	}
+	V* operator ->()
+	{
+		return &_node->_value;
+	}
+	bool operator!=(const self& it)
+	{
+		return _node != it._node;
+	}
+	/*
+	前置++：中序遍历，当前节点的左子树已经访问完了，
+			判断当前迭代器所在的节点是否有右节点
+			如果有：迭代器移动到当前节点右子树的最左节点
+			如果没有：向上回溯，找到一个满足当前节点不是所找到节点的右子树的节点
+	*/
+	self& operator++()
+	{
+		//如果存在右节点，移动到右子树的最左节点
+		if (_node->_right)
+		{
+			_node = _node->_right;
+			while (_node->_left)
+			{
+				_node = _node->_left;
+			}
+		}
+		//不存在右节点，向上回溯，找到一个满足当前节点不是所找到节点的右子树的节点
+		else
+		{
+			pNode parent = _node->_parent;
+			while (_node == parent->_right)
+			{
+				_node = parent;
+				parent = parent->_parent;
+			}
+			//特殊情况：_node->_right==parent
+			//整棵树没有右子树，且_node指向_header
+			if (_node->_right != parent)
+				_node = parent;
+		}
+		return *this;
+	}
+	/*
+	前置--：
+	当前节点的左孩子存在：走到左子树的最右节点
+	当前节点的左孩子不存在：向上回溯，找到一个满足当前节点不是所找到节点的左子树的节点
+	*/
+	self& operator--()
+	{
+		if (_node->_left)
+		{
+			_node = _node->_left;
+			while (_node->_right)
+			{
+				_node = _node->_right;
+			}
+		}
+		else
+		{
+			pNode parent = _node->_parent;
+			while (_node == parent->_left)
+			{
+				_node = parent;
+				parent = parent->_parent;
+			}
+			if (_node->_left != parent)
+			{
+				_node = parent;
+			}
+		}
+		return *this;
+	}
+};
 template<typename K, typename V,typename KeyOfValue>
 class RBTree
 {
 public:
 	typedef RBNode<V>Node;
 	typedef Node* pNode;
+	typedef RBTIterator<V> iterator;
+	iterator begin()
+	{
+		return iterator(_header->_left);
+	}
+	iterator end()
+	{
+		return iterator(_header);
+	}
+	iterator rbegin()
+	{
+		return iterator(_header->_right);
+	}
 	RBTree()
 	{
 		//构建一个空的红黑树
@@ -43,7 +143,7 @@ public:
 		_header->_left = _header;
 		_header->_right = _header;
 	}
-	bool insert(const V& value)
+	pair<iterator,bool> insert(const V& value)
 	{
 		//搜索树的插入
 		if (_header->_parent == nullptr)
@@ -60,7 +160,7 @@ public:
 			_header->_left = root;
 			//头的右孩子是树的最右节点
 			_header->_right = root;
-			return true;
+			return make_pair(iterator(root), true);
 		}
 		//从头开始搜索
 		pNode cur = _header->_parent;
@@ -72,7 +172,7 @@ public:
 			//对于不同的V，需要获取V对应的K
 			if (kov(cur->_value) == kov(value))
 			{
-				return false;
+				return make_pair(iterator(cur),false);
 			}
 			else if (kov(cur->_value) > kov(value))
 			{
@@ -87,6 +187,7 @@ public:
 		}
 		//找到插入位置，生成新节点，进行插入
 		cur = new Node(value);
+		pNode newnode = cur;
 		//如果新节点小于父节点，则插在左边
 		if (kov(parent->_value) > kov(cur->_value))
 		{
@@ -163,7 +264,7 @@ public:
 		//更新_header->_left,_header->_right
 		_header->_left = leftMost();
 		_header->_right = rightMost();
-		return true;
+		return make_pair(iterator(newnode),true);
 	}
 	void RotateR(pNode parent)
 	{
@@ -332,6 +433,7 @@ public:
 		return _isRBTree(root->_left, curBlackCount, totalBlackCount)
 			&& _isRBTree(root->_right, curBlackCount, totalBlackCount);
 	}
+	
 private:
 	pNode _header;//头结点
 };
@@ -346,23 +448,85 @@ class MyMap
 		}
 	};
 public:
-	bool insert(const pair<K, V>& data)
+	typedef typename RBTree<K, pair<K,V>, MapKeyOfVale>::iterator iterator;
+	iterator begin()
+	{
+		return _rb.begin();
+	}
+	iterator end()
+	{
+		return _rb.end();
+	}
+	iterator rbegin()
+	{
+		return _rb.rbegin();
+	}
+	V& operator[](const K& key)
+	{
+		return (*(_rb.insert(make_pair(key, V())).first)).second;
+	}
+	pair < iterator, bool> insert(const pair<K, V>& data)
 	{
 		return _rb.insert(data);
 	}
 private:
 	RBTree<K, pair<K, V>,MapKeyOfVale>_rb;
 };
+template<typename K>
+class MySet
+{
+	struct SetKeyOfValue
+	{
+		const K& operator()(const K& data)
+		{
+			return data;
+		}
+	};
+public:
+	typedef typename RBTree<K, K, SetKeyOfValue>::iterator iterator;
+	pair<iterator,bool> insert(const K& value)
+	{
+		return _rb.insert(value);
+	}
+private:
+	RBTree<K, K, SetKeyOfValue>_rb;
+};
 void testMap()
 {
 	MyMap<int, int>mp;
-	mp.insert(make_pair(1, 1));
 	mp.insert(make_pair(2, 2));
+	mp.insert(make_pair(1, 1));
 	mp.insert(make_pair(3, 3));
 	mp.insert(make_pair(4, 4));
+	mp[4] = 5;
+	mp[10] = 100;
+	MyMap<int, int>::iterator it = mp.begin();
+	while (it != mp.end())
+	{
+		cout << it->first << "---" << it->second << "  ";
+		++it;
+	}
+	cout << endl;
+	MyMap<int, int>::iterator it1 = mp.begin();
+	it1 = mp.rbegin();
+	while (it1 != mp.end())
+	{
+		cout << it1->first << "---" << it1->second << "  ";
+		--it1;
+	}
+	cout << endl;
+}
+void testSet()
+{
+	MySet<int>st;
+	st.insert(1);
+	st.insert(2);
+	st.insert(3);
+	st.insert(4);
 }
 int main()
 {
 	testMap();
+	//testSet();
 	return 0;
 }
