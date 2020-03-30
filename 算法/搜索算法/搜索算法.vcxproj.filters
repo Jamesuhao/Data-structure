@@ -21,6 +21,9 @@
     <ClCompile Include="图像渲染.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="岛屿的周长.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Search_Algorithm.h">

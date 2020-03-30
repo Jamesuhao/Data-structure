@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<cmath>
+#include<string>
 using namespace std;
 #if 0
 //子集树模板代码
@@ -338,5 +339,49 @@ int main()
 	cout << endl;
 	cout << "bestv:" << bestv << endl;
 	return 0;
+}
+void _letterCasePermutation(int i, string S,vector<string>& res)
+{
+	int length = S.size();
+	if (i == length)
+	{
+		res.push_back(S);
+	}
+	else
+	{
+		if (S[i] >= 'A' && S[i] <= 'Z')
+		{
+			_letterCasePermutation(i + 1, S, res);
+			S[i] += 32;
+			_letterCasePermutation(i + 1, S, res);
+		}
+		else if (S[i] >= 'a' && S[i] <= 'z')
+		{
+			_letterCasePermutation(i + 1, S, res);
+			S[i] -= 32;
+			_letterCasePermutation(i + 1, S, res);
+		}
+		else
+		{
+			_letterCasePermutation(i + 1, S, res);
+		}
+	}
+}
+vector<string> letterCasePermutation(string S)
+{
+	vector<string>res;
+	_letterCasePermutation(0, S, res);
+	return res;
+}
+int main()
+{
+	string S = "a1b2";
+	vector<string>vec;
+	vec=letterCasePermutation(S);
+	for (const auto v : vec)
+	{
+		cout << v << " ";
+	}
+	cout << endl;
 }
 #endif
